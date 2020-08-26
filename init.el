@@ -16,6 +16,9 @@
 
 
 ;; package
+(use-package buffer-expose
+	:straight t)
+
 (use-package color-identifiers-mode
   :straight t
   :hook (after-init . global-color-identifiers-mode))
@@ -49,18 +52,45 @@
   :straight t
   :hook (prog-mode . highlight-indent-guides-mode))
 
+(use-package nyan-mode
+	:straight t)
+
 (use-package rainbow-delimiters
   :straight t
   :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package sky-color-clock
+	:straight (sky-color-clock :type git :host github :repo "zk-phi/sky-color-clock"))
 
 (use-package yaml-mode
   :straight t
   :mode ("\\.yml\\'" . yaml-mode))
 
+(use-package yasnippet
+	:straight t)
+
+(use-package yasnippet-snippets
+	:straight t)
+
 
 ;; basic setting
+(column-number-mode 1)
+(global-linum-mode 1)
+(menu-bar-mode -1)
+;; (scroll-bar-mode -1)
+(show-paren-mode 1)
+(tool-bar-mode -1)
+(transient-mark-mode 1)
+
 (setq auto-save-default nil)
+(setq inhibit-startup-message t)
+(setq initial-scratch-message "")
 (setq make-backup-files nil)
+(setq mouse-wheel-progressive-speed nil)
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 5)))
+(setq ring-bell-function 'ignore)
+
+(setq-default tab-width 2)
 
 (set-face-attribute 'default nil :family "Ricty Diminished with Fira Code" :height 110)
 (set-frame-size (selected-frame) 145 30)
