@@ -17,7 +17,9 @@
 
 ;; package
 (use-package buffer-expose
-	:straight t)
+	:straight t
+	:config
+	(buffer-expose-mode 1))
 
 (use-package color-identifiers-mode
   :straight t
@@ -48,29 +50,56 @@
   :config
   (dumbparens-global-mode))
 
+(use-package emojify
+	:straight t
+	:hook (after-init . global-emojify-mode)
+	      (after-init . global-emojify-mode-line-mode)
+	)
+
 (use-package highlight-indent-guides
   :straight t
   :hook (prog-mode . highlight-indent-guides-mode))
 
 (use-package nyan-mode
-	:straight t)
+	:straight t
+	:config
+	(nyan-mode 1)
+	(nyan-toggle-wavy-trail)
+	(nyan-start-animation))
 
 (use-package rainbow-delimiters
   :straight t
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package restart-emacs
+	:straight t)
+
 (use-package sky-color-clock
-	:straight (sky-color-clock :type git :host github :repo "zk-phi/sky-color-clock"))
+	:straight (sky-color-clock :type git :host github :repo "zk-phi/sky-color-clock")
+	:init
+	(setq sky-color-clock-enable-emoji-icon t)
+	(setq sky-color-clock-format "%d %H:%M")
+	:config
+	(sky-color-clock-initialize 35)
+	(push '(:eval (sky-color-clock)) (default-value 'mode-line-format)))
+
+(use-package treemacs
+	:straight t)
 
 (use-package yaml-mode
   :straight t
   :mode ("\\.yml\\'" . yaml-mode))
 
 (use-package yasnippet
-	:straight t)
+	:straight t
+	:defer 1
+	:hook (prog-mode . yas-minor-mode))
 
 (use-package yasnippet-snippets
-	:straight t)
+	:straight t
+	:after yasnippet
+	:config
+	(yasnippet-snippets-initialize))
 
 
 ;; basic setting
