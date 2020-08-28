@@ -16,6 +16,9 @@
 
 
 ;; package
+(use-package all-the-icons
+	:straight t)
+
 (use-package buffer-expose
 	:straight t
 	:config
@@ -57,12 +60,7 @@
 	(setq doom-modeline-workspace-name t)
 	
   :config
-  (doom-modeline-mode 1)
-	(doom-modeline-def-modeline 'my-modeline
-		'(matches buffer-info remote-host buffer-position parrot selection-info)
-		'(misc-info minor-modes input-method buffer-encoding major-mode process vcs checker))
-	(defun setup-custom-doom-modeline ()
-		(add-hook 'doom-modeline-mode-hook 'setup-custom-doom-modeline)))
+  (doom-modeline-mode 1))
 
 (use-package doom-themes
   :straight t
@@ -70,6 +68,7 @@
 	(setq doom-themes-enable-bold t
 				doom-themes-enable-italic t)
   :config
+	(doom-themes-neotree-config)
 	(doom-themes-org-config)
   (load-theme 'doom-wilmersdorf t))
 
@@ -93,6 +92,44 @@
 	:defer 1
 	:hook (prog-mode . yas-minor-mode))
 
+(use-package neotree
+	:straight t
+	:after projectile
+	:commands (neotree-show neotree-hide neotree-dir neotree-find)
+	:init
+	(setq neo-create-file-auto-open t)
+	(setq neo-autorefresh nil)
+	(setq neo-show-hidden-files t)
+	(setq neo-smart-open t)
+	(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+	(setq-default neo-keymap-style 'concise)
+	:bind (([f8] . neotree-toggle)
+				 ([f9] . neotree-projectile-toggle)
+				 :map neotree-mode-map
+				 ("RET" . neotree-enter-hide)
+				 ("a" . neotree-hidden-file-toggle)
+				 ("<left>" . neotree-select-up-node)
+				 ("<right>" . neotree-change-root))
+	:config
+	(defun neotree-text-scale ()
+		"text scale for neotree."
+		(interactive)
+		(text-scale-adjust 0)
+		(text-scale-decrease 1)
+		(message nil))
+	(add-hook 'neo-after-create-hook
+						(lambda (_)
+							(call-interactively 'neotree-text-scale)))
+	(defun neo-open-file-hide (full-path &optional arg)
+		"open file and hiding neotree. the description of full-path & arg is in `neotree-enter'."
+		(neo-global--select-mru-window arg)
+		(find-file full-path)
+		(neotree-hide))
+	(defun neotree-enter-hide (&optional arg)
+		"neo-open-file-hide if file, neo-open-dir if dir. the description of arg is in `neo-buffer--execute'."
+		(interactive "P")
+		(neo-buffer--execute arg 'neo-open-file-hide 'neo-open-dir)))
+
 (use-package nyan-mode
 	:straight t
 	:config
@@ -100,15 +137,12 @@
 	(nyan-toggle-wavy-trail)
 	(nyan-start-animation))
 
-(use-package origami
+(use-package projectile
 	:straight t)
 
 (use-package rainbow-delimiters
   :straight t
   :hook (prog-mode . rainbow-delimiters-mode))
-
-(use-package ranger
-	:straight t)
 
 (use-package restart-emacs
 	:straight t)
@@ -125,6 +159,9 @@
 
 ;; (use-package treemacs
 ;; 	:straight t)
+
+(use-package vimish-fold
+	:straight t)
 
 (use-package yaml-mode
   :straight t
@@ -160,6 +197,8 @@
 (setq ring-bell-function 'ignore)
 
 (setq-default tab-width 2)
+
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 (set-face-attribute 'default nil :family "Ricty Diminished with Fira Code" :height 110)
 (set-frame-size (selected-frame) 145 30)
