@@ -38,6 +38,11 @@
   :config
   (company-tng-configure-default))
 
+(use-package company-shell
+	:straight t
+	:config
+	(add-to-list 'company-backends 'company-shell))
+
 (use-package counsel
 	:straight t
 	:config
@@ -94,8 +99,6 @@
 
 (use-package neotree
 	:straight t
-	:after projectile
-	:commands (neotree-show neotree-hide neotree-dir neotree-find)
 	:init
 	(setq neo-create-file-auto-open t)
 	(setq neo-autorefresh nil)
@@ -104,7 +107,6 @@
 	(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 	(setq-default neo-keymap-style 'concise)
 	:bind (([f8] . neotree-toggle)
-				 ([f9] . neotree-projectile-toggle)
 				 :map neotree-mode-map
 				 ("RET" . neotree-enter-hide)
 				 ("a" . neotree-hidden-file-toggle)
@@ -137,7 +139,7 @@
 	(nyan-toggle-wavy-trail)
 	(nyan-start-animation))
 
-(use-package projectile
+(use-package origami
 	:straight t)
 
 (use-package rainbow-delimiters
@@ -156,12 +158,6 @@
 	:config
 	(sky-color-clock-initialize 35)
 	(push '(:eval (sky-color-clock)) (default-value 'mode-line-format)))
-
-;; (use-package treemacs
-;; 	:straight t)
-
-(use-package vimish-fold
-	:straight t)
 
 (use-package yaml-mode
   :straight t
