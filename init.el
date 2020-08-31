@@ -35,13 +35,25 @@
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 2)
   (setq company-selection-wrap-around t)
+	(setq company-tooltip-maximum-width 100)
   :config
   (company-tng-configure-default))
+
+(use-package company-box
+	:straight t
+	:hook (company-mode . company-box-mode))
 
 (use-package company-shell
 	:straight t
 	:config
-	(add-to-list 'company-backends 'company-shell))
+	(add-to-list 'company-backends '(company-shell company-shell-env company-fish-shell)))
+
+(use-package company-quickhelp
+	:straight t
+	:defer t
+	:hook (company-mode . company-quickhelp-mode)
+	:init
+	(setq pos-tip-use-relative-coordinates t))
 
 (use-package counsel
 	:straight t
@@ -84,9 +96,18 @@
 
 (use-package emojify
 	:straight t
-	:hook (after-init . global-emojify-mode)
-	      (after-init . global-emojify-mode-line-mode)
-	)
+	:hook ((after-init . global-emojify-mode)
+	       (after-init . global-emojify-mode-line-mode)))
+
+(use-package fish-mode
+	:straight t)
+
+(use-package git-modes
+	:straight (git-modes :type git :host github :repo "kiennq/git-modes")
+	:mode ("/.dockerignore\\'" . gitignore-mode))
+
+(use-package haskell-mode
+	:straight t)
 
 (use-package highlight-indent-guides
   :straight t
@@ -96,6 +117,17 @@
 	:straight t
 	:defer 1
 	:hook (prog-mode . yas-minor-mode))
+
+(use-package lsp-ivy
+	:straight t
+	:commands lsp-ivy-workspace-symbol)
+
+(use-package lsp-mode
+	:straight t)
+
+(use-package lsp-ui
+	:straight t
+	:hook (lsp-mode . lsp-ui-mode))
 
 (use-package neotree
 	:straight t
@@ -140,7 +172,9 @@
 	(nyan-start-animation))
 
 (use-package origami
-	:straight t)
+	:straight t
+	:defer t
+	:hook (after-init . global-origami-mode))
 
 (use-package rainbow-delimiters
   :straight t
